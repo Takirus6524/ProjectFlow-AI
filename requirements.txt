@@ -1,0 +1,16 @@
+# Required packages for AI Project Idea Generator
+requests>=2.31.0
+
+# Optional AI Backend packages
+# Uncomment the ones you want to use:
+
+# For HuggingFace Transformers (local AI generation)
+transformers>=4.35.0
+torch>=2.0.0
+
+# Note: tkinter is included with Python on most systems
+# If missing, install via system package manager:
+# - Ubuntu/Debian: sudo apt-get install python3-tk
+# - Fedora: sudo dnf install python3-tkinter
+# - macOS: included with Python from python.org
+# - Windows: included with Python installer
