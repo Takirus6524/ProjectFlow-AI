@@ -12,6 +12,30 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox, filedialog
 import threading
 
+# Simple .env file loader
+def load_env_file(env_path='.env'):
+    """Load environment variables from .env file"""
+    if os.path.exists(env_path):
+        with open(env_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    key = key.strip()
+                    value = value.strip().strip('"').strip("'")
+                    # Remove inline comments (anything after // or #)
+                    if '//' in value:
+                        value = value.split('//')[0].strip()
+                    if '#' in value:
+                        value = value.split('#')[0].strip()
+                    if value:  # Only set if value is not empty
+                        os.environ[key] = value
+
+# Load .env file from script directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+env_file_path = os.path.join(script_dir, '.env')
+load_env_file(env_file_path)
+
 # API Keys - Replace with your own from the services below
 AI_BACKENDS = {
     'openai': {
@@ -282,7 +306,7 @@ class LocalAICodeGenerator:
         time_available = user_input.get('time', 'medium')
         focus_area = user_input.get('focus', 'general')
         
-        prompt = f"""Generate a unique programming project idea with the following details:
+        prompt = f"""Generate a unique Minecraft project idea with the following details:
 
 User Requirements:
 - Skill Level: {skill_level}
@@ -290,23 +314,23 @@ User Requirements:
 - Time Available: {time_available}
 - Focus Area: {focus_area}
 
-Please provide a detailed project suggestion in this JSON format:
+Please provide a detailed Minecraft project suggestion in this JSON format:
 {{
-    "name": "Project Name",
-    "description": "Brief description of the project",
-    "technologies": ["tech1", "tech2", "tech3"],
+    "name": "Minecraft Project Name",
+    "description": "Brief description of the Minecraft build/mod/plugin/datapack",
+    "technologies": ["Minecraft Java Edition", "Spigot/Paper", "MCreator", "Fabric/Forge", etc.],
     "difficulty": "{skill_level}",
     "estimated_duration": "e.g., 1-2 weeks",
     "key_features": ["feature1", "feature2", "feature3"],
-    "learning_outcomes": ["what user will learn"],
-    "prerequisites": ["required knowledge"],
-    "potential_extensions": ["how to expand the project"],
-    "resources": ["suggested resources/tutorials"]
+    "learning_outcomes": ["what user will learn about Minecraft development"],
+    "prerequisites": ["required Minecraft/coding knowledge"],
+    "potential_extensions": ["how to expand the Minecraft project"],
+    "resources": ["suggested Minecraft tutorials/documentation"]
 }}
 
-Make the project creative, practical, and educational. The project should be appropriate for the skill level and time constraints.
+Make the Minecraft project creative, fun, and educational. Include details about whether it's a build, redstone contraption, mod, plugin, datapack, command creation, or resource pack. The project should be appropriate for the skill level and time constraints.
 
-Project Idea:"""
+Minecraft Project Idea:"""
         
         return prompt
     
